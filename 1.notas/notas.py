@@ -1,6 +1,27 @@
 # Aplicación de gestión de notas y lista de tareas
+import json
+import os
 
-tareas = []
+ARCHIVO_TAREAS = "tareas.json"
+
+def cargar_tareas():
+    if not os.path.exists(ARCHIVO_TAREAS):
+        return []
+    try:
+        with open(ARCHIVO_TAREAS, 'r', encoding='utf-8') as archivo:
+            return json.load(archivo)
+    except (json.JSONDecodeError, IOError):
+        print("Error al leer archivo JSON. Se iniciará una lista vacía.")
+        return []
+
+def guardar_tareas():
+    try:
+        with open(ARCHIVO_TAREAS, 'w', encoding='utf-8') as archivo:
+            json.dump(tareas, archivo, indent=4, ensure_ascii=False)
+    except IOError:
+        print("Error al guardar las tareas en el disco.")
+
+tareas = cargar_tareas()
 
 def menu_tareas():
     print("\n--- Lista de tareas ---")
@@ -13,6 +34,7 @@ def menu_tareas():
 def add_tareas():
     tarea = input("Introduce la tarea: ")
     tareas.append({"tarea":tarea, "done":False})
+    guardar_tareas()
     print(f"Tarea '{tarea}' añadida")
 
 
@@ -33,6 +55,7 @@ def marcar_tareas():
         index = int(input("Introduce el número de tareas que quieres marcar como completa: ")) -1
         if 0 <= index < len(tareas):
             tareas[index]["done"] = True
+            guardar_tareas()
             print("Marcada como completada")
         else:
             print("Número no validao")
@@ -47,6 +70,7 @@ def borrar_tareas():
         index = int(input("Introduce el número de tarea que quieres eliminar: ")) -1
         if 0 <= index < len(tareas):
             borrada = tareas.pop(index)
+            guardar_tareas()
             print(f"Se ha eliminado la tarea: {borrada['tarea']}")
         else:
             print("Tarea no encontrada")

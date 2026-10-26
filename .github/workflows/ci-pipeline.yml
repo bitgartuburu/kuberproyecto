@@ -1,0 +1,20 @@
+name: pipeline
+
+on: push
+
+jobs:
+  validar-y-escanear:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validar sintaxis de archivos YAML
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: .
+          config_data: |
+            rules:
+              line-length: disable
+
+      - name: Escanear secretos con Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
