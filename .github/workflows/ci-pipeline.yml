@@ -6,6 +6,10 @@ jobs:
   validar-y-escanear:
     runs-on: ubuntu-latest
     steps:
+
+      - name: Checkout del repositorio
+          uses: actions/checkout@v4
+          
       - name: Validar sintaxis de archivos YAML
         uses: ibiqlik/action-yamllint@v3
         with:
