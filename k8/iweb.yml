@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iweb-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iweb
+  template:
+    metadata:
+      labels:
+        app: iweb
+    spec:
+      containers:
+      - name: contenedor-iweb
+        image: iweb:v2
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iweb-service
+spec:
+  selector:
+    app: iweb
+  ports:
+  - protocol: TCP
+    port: 8000
+    targetPort: 8000
+  type: ClusterIP

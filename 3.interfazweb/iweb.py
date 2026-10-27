@@ -6,8 +6,8 @@ app = Flask(__name__)
 
 # URLs de comunicación con los otros microservicios
 # (En entorno local usarán localhost y sus respectivos puertos; en Kubernetes usarán los nombres de servicio)
-NOTAS_URL = "http://localhost:5000/notas"
-CALENDARIO_URL = "http://localhost:5001/eventos"
+NOTAS_URL = "http://notas-service:5000/notas"
+CALENDARIO_URL = "http://calendario-service:5001/eventos"
 
 
 @app.route("/")
@@ -94,4 +94,4 @@ def index():
 
 
 if __name__ == "__main__":
-  app.run(host="0.0.0.0", port=80)
+  app.run(host="0.0.0.0", port=8000)
